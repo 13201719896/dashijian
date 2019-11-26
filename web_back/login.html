@@ -9,6 +9,9 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -23,14 +26,45 @@
             <form class="login_form">
                 <i class="iconfont icon-user"></i>
                 <i class="iconfont icon-key"></i>
-                <input type="text" class="input_txt" placeholder="邮箱/手机号">
-                <input type="password" class="input_pass" placeholder="密码">
-                <input type="submit" class="input_sub" value="登 录">
+                <input type="text" id="user_name" class="input_txt" placeholder="邮箱/手机号">
+                <input type="password" id="password" class="input_pass" placeholder="密码">
+                <input type="button" id="btnLogin" class="input_sub" value="登 录">
             </form>
         </div>
 
-    </div> 
+    </div>
 
 </body>
+<script>
+    const loginUrl = 'http://localhost:8000/admin/login';
+
+    $('#btnLogin').click(function(e) {
+        let userName = $('#user_name').val().trim();
+
+        let mypassword = $('#password').val().trim();
+        if (userName === '' || mypassword === '') {
+            alert('不能为空');
+
+            return;
+        }
+
+        $.post(loginUrl, {
+            user_name: userName,
+            password: mypassword,
+        }, function(res) {
+            console.log(res);
+            if (res.code === 200) {
+                window.location.href = './index.html';
+                //   页面跳转
+            } else if (res.code === 400) {
+
+                alert(res.msg)
+
+            }
+        });
+
+        e.preventDefault();
+    })
+</script>
 
 </html>
